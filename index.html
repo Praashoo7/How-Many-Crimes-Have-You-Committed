@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How many Crimes have you Committed?</title>
+    <meta name="description" content='Take a look at what kind of criminal you are based on your Total crimes commited on Github!'>
+    <meta property="og:url" content="https://praashoo7.github.io/How-many-Crimes-have-you-Committed/"/>
+    <meta property="og:image" content="https://praashoo7.github.io/How-many-Crimes-have-you-Committed/imgs/ReadMe-Images/OGImg.png"/>
+    <meta property="og:description" content='Take a look at what kind of criminal you are based on your Total crimes commited on Github!'/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:image:alt" content="How-many-Crimes-have-you-Committed Banner">
+    <meta name="twitter:url" content="https://praashoo7.github.io/How-many-Crimes-have-you-Committed/"/>
+    <meta name="twitter:title" content="How-many-Crimes-have-you-Committed"/>
+    <meta name="twitter:description" content='Take a look at what kind of criminal you are based on your Total crimes commited on Github!'/>
+    <meta name="twitter:image" content="https://praashoo7.github.io/How-many-Crimes-have-you-Committed/imgs/ReadMe-Images/OGImg.png"/>
+    <meta name="description" content='Take a look at what kind of criminal you are based on your Total crimes commited on Github!'/>
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/plugins/exporting.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <link rel="icon" href="imgs/main.svg">
+</head>
+<body>
+    <div class="top">
+        <h1>How many Crimes have you Committed?</h1>
+        <input type="text" id="username" placeholder="Git username" autocomplete="off">
+        <button id="submit">Get Shit</button>
+    </div>
+    <div class="chartContainer" id="chartContainer">
+        <div class="errorMsg" id="errorMsg"></div>
+        <label class="container" id="container">
+            <input type="checkbox" class="textChange" id="textChange">
+            <div class="checkmark">
+                <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 120 120" enable-background="new 0 0 120 120" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11.3,6.5v110h96.578V6.5H11.3z M39.499,103.07H23.155V86.727h16.344V103.07z M39.499,78.116H23.155V61.771h16.344V78.116z M67.762,103.07H51.417V86.727h16.345V103.07z M67.762,78.116H51.417V61.771h16.345V78.116z M96.075,103.07H79.729V61.771h16.347 V103.07z M96.676,45.701H23.324V19.514h73.352V45.701z"></path> </g></svg>
+            </div>
+        </label>
+        <label class="containerHideLabel" id="containerHideLabel">
+            <input type="checkbox" class="hideLabels" id="hideLabels">
+            <div class="checkmark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.1872 7.98329L16.5134 3.24235C16.0053 2.72703 15.1925 2.5209 14.4813 2.62396C14.3797 2.62396 14.2781 2.62396 14.1765 2.72703C14.1765 2.72703 14.1765 2.72703 14.0749 2.72703C13.9733 2.72703 13.9733 2.72703 13.8717 2.83009C13.3636 2.31477 12.6524 2.00558 11.8396 2.00558H5.84492C4.32086 1.90251 3 3.24235 3 4.78831V17.2591C3 18.0836 3.30481 18.805 3.91444 19.3203L6.14973 21.2785C6.65775 21.7939 7.36898 22 7.97861 22H9.80749C10.5187 22 11.1283 21.7939 11.6364 21.2785L14.4813 18.702L21.1872 11.8997C21.6952 11.3844 22 10.663 22 9.94151C22 9.22006 21.6952 8.49861 21.1872 7.98329ZM8.89305 18.1866C8.38503 18.1866 7.87701 17.6713 7.87701 17.156C7.87701 16.6407 8.38503 16.1253 8.89305 16.1253C9.40107 16.1253 9.90909 16.6407 9.90909 17.156C9.90909 17.6713 9.40107 18.1866 8.89305 18.1866ZM20.1711 10.8691L14.7861 16.3315V4.78831C14.7861 4.58218 14.7861 4.37605 14.6845 4.16992C14.6845 4.16992 14.6845 4.16992 14.7861 4.16992H14.8877C14.8877 4.16992 14.9893 4.16992 15.0909 4.16992C15.2941 4.16992 15.3957 4.27299 15.5989 4.37605L20.2727 9.117C20.4759 9.32312 20.6791 9.63232 20.6791 10.0446C20.6791 10.4568 20.3743 10.663 20.1711 10.8691Z" fill="#101010"></path> </g></svg>
+            </div>
+        </label>
+        <div class="dataShowInfo" id="dataShowInfo">Data will be shown here!</div>
+        <div id="loading">
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+            <div class="spinner"></div>
+            <!-- <p>Loading user data...</p> -->
+        </div>
+        <div class="userData" id="userData">
+            <div class="pin" id="pin">
+            </div>
+            <div class="resultUser" id="resultUser"></div>
+        </div>
+        <div class="chartData">
+            <div class="result" id="result"></div>
+            <div id="chartdiv" style="width: 100%; height: 100%;"></div>
+            <div class="totalAllCommits" id="totalAllCommits"></div>
+        </div>
+    </div>
+    <div class="share" id="share">
+        <button class="shareOnSocial" id="shareOnSocial">Copy Image</button>
+    </div>
+
+    <div class="clonedDiv" id="clonedDiv"></div>
+
+    <div class="small_device">
+        <div class="small_device_card">
+            <div class="small_device_text">
+                I thought criminals might have enough money to buy a device with a bigger Display!
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script src="index.js"></script>

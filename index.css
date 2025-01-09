@@ -1,0 +1,722 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+
+/* ------------------------------- TEXT-SELECTION -------------------------------*/
+
+::-moz-selection {
+    background: #c6bcad;
+}
+::selection {
+    background: #c6bcad;
+}
+
+
+
+/* ----------------------------------- SCROLLBAR -----------------------------------*/
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+.gitCommitsData::-webkit-scrollbar{
+    height: 10px;
+}
+  
+::-webkit-scrollbar-track, .gitCommitsData::-webkit-scrollbar-track {
+    background-color: #171717;
+}
+   
+::-webkit-scrollbar-thumb, .gitCommitsData::-webkit-scrollbar-thumb {
+    background-color: black; 
+    border-top: solid 3px #171717;
+    border-bottom: solid 3px #171717;
+    border-left: solid 3px #171717;
+    border-right: solid 3px #171717;
+}
+
+
+
+/* ----------------------------------- BODY -----------------------------------*/
+
+body {
+    font-family: Space Mono;
+    padding: 1em;
+    text-align: center;
+    width: 100%;
+    background-color: #F5F3F0;
+    background-image: url(imgs/textures/cardboard.png);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+
+/* ----------------------------------- TOP -----------------------------------*/
+
+h1{
+    color: black;
+    margin-top: 0.5em;
+    margin-bottom: 0.75em;
+}
+#username {
+    width: 220px;
+    font-family: Space Mono;
+    color: black;
+    background-color: transparent;
+    border: none;
+    padding: 0.5em 0.5em 0.45em 0.5em;
+    outline: none;
+    margin-bottom: 1em;
+    background: url(imgs/textures/textFieldPaper.jpg);
+    background-size: 220px 35px;
+    background-repeat: no-repeat;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 1px;
+}
+#username::placeholder{
+    color: rgb(0, 0, 0, 0.3);
+}
+#submit {
+    padding: 0.25em 0.75em 0.33em 0.75em;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: Space Mono;
+    background-color: rgb(218, 204, 162);
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 0px;
+    border: none;
+    color: black;
+    outline: none;
+    font-weight: bold;
+}
+#submit:hover{
+    color: black;
+    background-color: rgb(218, 204, 162, 0.8);
+}
+#submit:active{
+    box-shadow: none;
+    scale: 0.99;
+}
+
+
+
+/* ----------------------------------- CHART -----------------------------------*/
+
+.chartData{
+    display: flex;
+    width: 100%;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+}
+.chartContainer{
+    position: relative;
+    gap: 1em;
+    height: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 2em;
+    margin-top: 1em;
+    color: black;
+
+    max-width: 1280px;
+    background-image: url(imgs/textures/p2.png);
+    background-color: #c6bcad;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+}
+#chartdiv, #chartdivClone {
+    position: relative;
+    width: 100% !important;
+    height: 525px !important;
+}
+
+
+
+/* ----------------------------------- USERDATA -----------------------------------*/
+
+.errorMsg{
+    position: absolute;
+    padding: 0.5em 0.75em 0.5em 0.75em;
+    background-image: url(imgs/textures/Corrugation.png);
+    background-color: #dbd6d2;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    color: #171717;
+    font-weight: bold;
+    display: none;
+    transform: rotate(1deg);
+}
+.userData{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1em;
+}
+#result, #resultUser {
+    position: relative;
+    font-family: Space Mono;
+    padding: 1em 2.75em 1em 2.75em;
+    background-color: #dbd6d2;
+    flex-direction: column;
+    color: #101010;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-image: url(imgs/textures/Corrugation.png);
+}
+#result{
+    margin-left: 2.5em;
+    transform: rotate(1deg);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+#resultUser{
+    color: black;
+    background-color: transparent;
+    background-image: none;
+    padding: 0 0.5em 0 0.5em;
+    gap: 1em;
+}
+#resultUser p{
+    font-weight: bold;
+}
+#resultUser img{
+    /* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    border-radius: 5px;
+    transform: rotate(0.5deg);
+    z-index: 1; */
+    /* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
+    border-radius: 5px;
+    border: 1px solid rgb(0, 0, 0, 0.25);
+    padding: 0.75em;
+    background-color: #dbd6d2;
+    transform: rotate(2deg);
+    z-index: 1;
+}
+.resultUser h2{
+    position: relative;
+    padding: 0.5em 0.75em 0.5em 0.75em; /*#9c1b30*/
+    width: 100%;
+    margin-bottom: 0.35em;
+    background-color: #dacca2;
+    background-image: url(imgs/textures/natural-paper.png); /* natural-paper */ 
+    color: black;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.resultUser h2:nth-child(3){
+    position: relative;
+    padding: 0.5em 0.75em 0.5em 0.75em; /*#9c1b30*/
+    width: 100%;
+    transform: rotate(2deg);
+    margin-bottom: 0.35em;
+    background-color: #9c1b30;
+    background-image: url(imgs/textures/dark-stripes-light.png); /* Debut-Light, dotnoise-light-grey, handmade-paper */
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    color: black;
+}
+/* .resultUser h2:nth-child(3)::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: -1em;
+    transform: rotate(-10deg);
+    width: 100px;
+    height: 100px;
+    background-image: url(imgs/textures/tape.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 20;
+} */
+.resultUser h2:nth-child(3)::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: -1em;
+    margin-top: -0.25em;
+    transform: rotate(-20deg);
+    width: 100px;
+    height: 100px;
+    background-image: url(imgs/textures/tape.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 20;
+}
+
+.pin {
+    position: absolute;
+    margin-top: -3.25em;
+    margin-left: -1.5em;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 220px;
+    z-index: 10;
+    background-image: url(imgs/textures/paperclip.png);
+    background-size: 250px 220px;
+    background-repeat: no-repeat;
+  }
+
+  
+  .shadow {
+    position: absolute;
+    top: 18px;
+    left: -8px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: radial-gradient(var(--paper-shadow), 20%, rgba(201, 191, 141, 0));
+  }
+  
+  .metal {
+    position: absolute;
+    width: 5px;
+    height: 20px;
+    background: linear-gradient(to right, #808080, 40%, #eae8e8, 50%, #808080);
+    border-radius: 0 0 30% 30%;
+    transform: rotate(50deg);
+    transform-origin: bottom left;
+    top: 15px;
+    border-bottom: 1px solid #808080;
+  }
+  
+  .bottom-circle {
+    position: absolute;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: var(--pin-color);
+    background: radial-gradient(
+      circle at bottom right,
+      var(--pin-light),
+      25%,
+      var(--pin-dark),
+      90%,
+      var(--pin-color)
+    );
+  }
+/* Barrel */
+.bottom-circle::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 20px;
+    height: 30px;
+    transform: rotate(55deg);
+    transform-origin: 100% 100%;
+    border-radius: 0 0 40% 40%;
+    background: linear-gradient(
+      to right,
+      var(--pin-dark),
+      30%,
+      var(--pin-color),
+      90%,
+      var(--pin-light)
+    );
+  }
+  
+  /* Top circle */
+  .bottom-circle::after {
+    content: "";
+    position: absolute;
+    right: -10px;
+    top: -5px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at right,
+      var(--pin-light),
+      30%,
+      var(--pin-color),
+      var(--pin-dark) 80%
+    );
+  }
+  
+
+/* ----------------------------------- CHECKBOX -----------------------------------*/
+
+.container, .containerHideLabel {
+    position: absolute;
+    margin: 1.75em 1em 0 0;
+    top: 0;
+    left: 0;
+    margin-left: 25.75em;
+    cursor: pointer;
+    user-select: none;
+    display: none;
+    pointer-events: none;
+    opacity: 0.5;
+}
+.containerHideLabel {
+    right: 0;
+    visibility: hidden;
+    display: block;
+    margin: 4.25em 1em 0 0;
+    margin-left: 25.75em;
+}
+.container input, .containerHideLabel input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.container .checkmark, .containerHideLabel .checkmark {
+    position: relative;
+    top: 0;
+    left: 0;
+    background-image: url(imgs/textures/Corrugation.png);
+    background-color: #dbd6d2;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    width: 1.85em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-2deg);
+}
+.container .checkmark svg, .containerHideLabel .checkmark svg{
+    width: 20px;
+    height: 20px;
+    fill: black;
+} 
+.container .checkmark:hover svg, .containerHideLabel .checkmark:hover svg {
+    opacity: 0.75;
+}
+.container input:checked ~ .checkmark, .containerHideLabel input:checked ~ .checkmark {
+    background-color: rgb(243, 207, 153);
+}
+.container input:checked ~ .checkmark svg, .containerHideLabel input:checked ~ .checkmark svg {
+    fill: black;
+}
+
+
+
+
+#dataShowInfo{
+    position: absolute;
+    padding: 0.5em 2em 0.5em 2em !important;
+}
+
+
+
+
+/* ----------------------------------- LOADING -----------------------------------*/
+
+#loading {
+    position: absolute;
+    transform: translateX(0%) translateY(-50%);
+    display: none;
+    margin: 3em 0 3em 0;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+.spinner {
+    font-family: Space Mono;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: #DBD6D2;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 1px, rgba(0, 0, 0, 0.24) 0px 1px 1px;
+    animation: move 0.75s steps(1) infinite;
+    animation-delay: 0.25s;
+}
+.spinner:nth-child(2) {
+    animation-delay: 0.5s;
+}
+.spinner:nth-child(3) {
+    animation-delay: 0.75s;
+}
+@keyframes move {
+    0% { background-color: #DBD6D2; }
+    50% { background-color: rgb(218, 204, 162, 0.5) }
+    100% { background-color: #DBD6D2; }
+}
+
+
+
+/* ----------------------------------- SHARE -----------------------------------*/
+
+.share{
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    margin-top: 1em;
+    width: 100%;
+    opacity: 0.5;
+    pointer-events: none;
+    max-width: 1280px;
+}
+.shareOnSocial{
+    width: max-content;
+    background-color: #dacca2;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 0px;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    font-family: Space Mono;
+    padding: 0.5em 0.75em 0.5em 0.75em;
+}
+.shareOnSocial:hover{
+    opacity: 0.85;
+    cursor: pointer;
+}
+
+
+
+/* ----------------------------------- GRAPH -----------------------------------*/
+
+.am5exporting-icon {
+    background-color: hwb(27 82% 14%) !important;
+    background-image: url(imgs/textures/Corrugation.png) !important;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px !important;
+    opacity: 1 !important;
+    border-radius: 0px !important;
+    margin: 6px 0 0 0 !important;
+    width: 2.25em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 2em !important;
+    padding: 0 !important;
+}
+.am5exporting-icon:hover{
+    background-color: rgb(219, 214, 210, 0.5) !important;
+}
+.am5exporting-list{
+    background-color: #dbd6d2 !important;
+    border: none !important;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px !important;
+    border-radius: 0px !important;
+    font-weight: bold !important;
+}
+.am5exporting-item a:hover{
+    background-color: #dacca2  !important;
+}
+.am5exporting-type-separator, .am5exporting-label-alt {
+    color: black !important;
+    font-weight: normal !important;
+}
+.am5exporting-type-separator{
+    border-bottom: 1px solid black !important;
+}
+.am5exporting-menu * {
+    transition: none !important;
+}
+
+
+
+/* ----------------------------------- MEDIAQUERY -----------------------------------*/
+
+@media screen and (max-width: 1300px) {
+    #dataShowInfo, #loading{
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        top: 40%;
+    }
+    #dataShowInfo{
+        top: 50%;
+    }
+    .userData .resultUser img{
+        width: 250px !important;
+        height: 250px !important;
+    }
+    .pin {
+        margin-top: -1.17em;
+    }
+    .container, .containerHideLabel{
+        margin-left: 19.75em;
+    }
+}
+@media screen and (max-width: 945px) {
+    #chartdiv {
+        position: relative;
+        width: 100% !important;
+        height: 725px !important;
+    }
+    .chartContainer, .chartData{
+        flex-direction: column;
+        height: max-content;
+        align-items: center;
+        justify-content: center;
+    }
+    .chartData{
+        margin-top: 2em;
+        gap: 1em;
+    }
+    .result{
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+    .userData .resultUser img{
+        min-width: 450px;
+        min-height: 450px;
+    }
+    .clonedDiv .chartContainer .userData .resultUser img{
+        min-width: 250px !important;
+        min-height: 250px !important;
+    }
+    .pin {
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+    .container, .containerHideLabel{
+        top: 0;
+        right: 0;
+        left: auto;
+        margin-left: 0;
+        margin-right: 1em;
+        margin-top: 1em;
+    }
+    .containerHideLabel{
+        margin-right: 3.5em;
+    }
+}
+@media screen and (max-width: 683px) {
+    .chartContainer{
+        padding: 3em 1em 1em 1em;
+    }
+}
+@media screen and (max-width: 550px) {
+    .userData .resultUser img{
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0;
+        min-height: 0;
+    }
+    .chartData{
+        margin: 1em 0 0 0;
+    }
+}
+
+
+
+/* -------------------------------- SMALL-DEVICE -------------------------------- */
+
+.small_device{
+    width: 100%;
+    height: 100dvh;
+    display: none;
+    padding: 5px;
+  }
+  .small_device_card{
+    width: 100%;
+    padding: 0.75em;
+    font-size: 0.5em;
+    border: 1px solid black;
+    background-image: url(imgs/textures/Corrugation.png);
+    background-color: #c6bcad;
+  }
+  .small_device_text{
+    font-weight: bold;
+    font-size: clamp(0.1rem, 0.3043rem + 3.4783vw, 3rem);
+    color: black;
+  }
+  
+  @media only screen and (max-width: 279px) {
+    .top, .chartContainer, .share{
+        display: none;
+    }
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    .small_device{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        color: black;
+    }
+  }
+  @media only screen and (max-width: 80px) {
+    .small_device{
+        padding: 2px;
+    }
+  }
+
+
+.clonedDiv{
+    position: absolute;
+    min-width: 1100px;
+    z-index: 100;
+    left: -10000px;
+    top: -10000px;
+    background-color: #dacca2;
+    background-image: url(imgs/textures/p2.png);
+    height: max-content;
+}
+.clonedDiv h1{
+    text-align: left;
+    padding-left: 1em;
+    margin-top: 0.7em;
+}
+.clonedDiv .chartContainer{
+    margin-top: 0;
+    padding: 2em;
+    flex-direction: row;
+    align-items: start;
+    border-top: 2px solid black;
+    box-shadow: none;
+}
+.clonedDiv .chartContainer .chartData{
+    position: relative;
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+}
+.clonedDiv .chartContainer .userData .resultUser img{
+    width: 250px !important;
+    height: 250px !important;
+}
+#chartdivClone{
+    height: 500px !important;
+}
+.clonedDiv .chartContainer .userData .pin{
+    margin-top: -2.9em;
+    margin-left: -1.5em;
+    width: 220px;
+    height: 190px;
+    background-size: 220px 190px;
+}
+.clonedDiv .chartContainer .chartData #result{
+    margin-left: 0;
+}
+.clonedDiv .chartContainer .chartData #result, .clonedDiv .chartContainer .userData  .resultUser h2, .clonedDiv .chartContainer .userData .resultUser h2:nth-child(3){
+    box-shadow: none;
+}
+.clonedDiv .chartContainer .chartData #result::after, .clonedDiv .chartContainer .userData  .resultUser h2::after, .clonedDiv .chartContainer .userData .resultUser h2:nth-child(3)::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: blur(2px);
+    border: none;
+    transform: translateX(0.5px) translateY(0.5px);
+    border-right: 1px solid rgba(0, 0, 0, 0.24);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+}
+.clonedDiv .chartContainer .userData .resultUser h2::after, .clonedDiv .chartContainer .userData .resultUser h2:nth-child(3)::after{
+    filter: blur(1.5px);
+    left: 0;
+    top: 0;
+}
