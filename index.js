@@ -197,7 +197,8 @@ async function updateTotalLinesDisplay() {
                 criminalBornElement = document.createElement('p');
                 document.getElementById('resultUser').appendChild(criminalBornElement);
             }
-            criminalBornElement.textContent = `First Crime : ` + date.toLocaleDateString()
+            // document.getElementById('firstCrimeDate').innerHTML = date.toLocaleDateString()
+            criminalBornElement.innerHTML = "Criminal Activities Since: " + date.toLocaleDateString()
         } else {
             console.log("Couldn't retrieve signup date");
         }
@@ -264,9 +265,18 @@ async function fetchUserStats() {
     }
     try {
         const response = await fetch(`https://github-stats-worker.gdata329947254.workers.dev/${username}`);
-        // if (response.status === 403) {
-        //     throw new Error('API rate limit exceeded. Please try again later.');
-        // }
+
+        if (!response.ok) {
+            if (response.status === 429) {
+                throw new Error('GITHUB_RATE_LIMIT');
+            } else if (response.status === 403) {
+                throw new Error('CLOUDFLARE_RATE_LIMIT');
+            } else if (response.status === 404) {
+                throw new Error('USER_NOT_FOUND');
+            }
+            throw new Error('USER_NOT_FOUND');
+        }
+
         const data = await response.json();
         const userData = data.user;
         const repos = data.repos;
@@ -277,7 +287,19 @@ async function fetchUserStats() {
     } catch (error) {
         resultDiv.innerHTML = `Error: ${error.message}`;
         document.getElementById('errorMsg').style.display = 'block';
-        document.getElementById('errorMsg').innerHTML = 'USER DOES NOT EXIST!';
+        switch(error.message) {
+            case 'GITHUB_RATE_LIMIT':
+                document.getElementById('errorMsg').innerHTML = 'GitHub API rate limit exceeded! Please try again in an hour. 🕒';
+                break;
+            case 'CLOUDFLARE_RATE_LIMIT':
+                document.getElementById('errorMsg').innerHTML = 'Daily request limit reached! Please try again after midnight UTC. ⏳';
+                break;
+            case 'USER_NOT_FOUND':
+                document.getElementById('errorMsg').innerHTML = 'USER DOES NOT EXIST!';
+                break;
+            default:
+                document.getElementById('errorMsg').innerHTML = 'Something went wrong! Please try again later.';
+        }
     } finally {
         loadingDiv.style.display = 'none';
         document.getElementById('dataShowInfo').style.display = 'none';
