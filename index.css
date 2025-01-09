@@ -375,7 +375,7 @@ h1{
 
 /* ----------------------------------- CHECKBOX -----------------------------------*/
 
-.container, .containerHideLabel {
+.container, .containerHideLabel, .containerWeaponStats {
     position: absolute;
     margin: 1.75em 1em 0 0;
     top: 0;
@@ -387,21 +387,29 @@ h1{
     pointer-events: none;
     opacity: 0.5;
 }
-.containerHideLabel {
+.containerWeaponStats{
+    width: max-content;
+}
+.containerHideLabel, .containerWeaponStats {
     right: 0;
     visibility: hidden;
     display: block;
     margin: 4.25em 1em 0 0;
     margin-left: 25.75em;
 }
-.container input, .containerHideLabel input {
+.containerWeaponStats{
+    margin: 6.8em 1em 0 0;
+    margin-left: 25.75em;
+    z-index: 25;
+}
+.container input, .containerHideLabel input, .containerWeaponStats input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
     height: 0;
     width: 0;
 }
-.container .checkmark, .containerHideLabel .checkmark {
+.container .checkmark, .containerHideLabel .checkmark, .containerWeaponStats .checkmark {
     position: relative;
     top: 0;
     left: 0;
@@ -415,18 +423,21 @@ h1{
     justify-content: center;
     transform: rotate(-2deg);
 }
-.container .checkmark svg, .containerHideLabel .checkmark svg{
+.containerWeaponStats .checkmark {
+    transform: rotate(2deg);
+}
+.container .checkmark svg, .containerHideLabel .checkmark svg, .containerWeaponStats .checkmark svg{
     width: 20px;
     height: 20px;
     fill: black;
 } 
-.container .checkmark:hover svg, .containerHideLabel .checkmark:hover svg {
+.container .checkmark:hover svg, .containerHideLabel .checkmark:hover svg, .containerWeaponStats .checkmark:hover svg {
     opacity: 0.75;
 }
-.container input:checked ~ .checkmark, .containerHideLabel input:checked ~ .checkmark {
+.container input:checked ~ .checkmark, .containerHideLabel input:checked ~ .checkmark, .containerWeaponStats input:checked ~ .checkmark {
     background-color: rgb(243, 207, 153);
 }
-.container input:checked ~ .checkmark svg, .containerHideLabel input:checked ~ .checkmark svg {
+.container input:checked ~ .checkmark svg, .containerHideLabel input:checked ~ .checkmark svg, .containerWeaponStats input:checked ~ .checkmark svg {
     fill: black;
 }
 
@@ -574,8 +585,8 @@ h1{
     .pin {
         margin-top: -3.3em;
     }
-    .container, .containerHideLabel{
-        margin-left: 19.75em;
+    .container, .containerHideLabel, .containerWeaponStats{
+        margin-left: 22em;
     }
 }
 @media screen and (max-width: 945px) {
@@ -612,7 +623,7 @@ h1{
         left: 0;
         right: 0;
     }
-    .container, .containerHideLabel{
+    .container, .containerHideLabel, .containerWeaponStats{
         top: 0;
         right: 0;
         left: auto;
@@ -622,6 +633,9 @@ h1{
     }
     .containerHideLabel{
         margin-right: 3.5em;
+    }
+    .containerWeaponStats{
+        margin-right: 6em;
     }
 }
 @media screen and (max-width: 683px) {
@@ -643,6 +657,16 @@ h1{
 @media screen and (max-width: 768px) {
     .resultUser h2, .resultUser h2:nth-child(3), .resultUser p{
         width: auto;
+    }
+}
+@media screen and (max-width: 425px) {
+    .pin {
+        margin-left: -1.5em;
+        margin-top: -2.95em;
+        left: 0;
+        width: 200px;
+        height: 200px;
+        background-size: 200px 200px;
     }
 }
 
@@ -696,10 +720,9 @@ h1{
 
 .clonedDiv{
     position: absolute;
-    min-width: 1100px;
+    min-width: 1400px;
     z-index: 100;
-    left: -10000px;
-    top: -10000px;
+
     background-color: #dacca2;
     background-image: url(imgs/textures/p2.png);
     height: max-content;
@@ -716,6 +739,7 @@ h1{
     align-items: start;
     border-top: 2px solid black;
     box-shadow: none;
+    max-width: 1400px;
 }
 .clonedDiv .chartContainer .chartData{
     position: relative;
@@ -733,7 +757,7 @@ h1{
 }
 .clonedDiv .chartContainer .userData .pin{
     margin-top: -2.9em;
-    margin-left: -0.45em;
+    margin-left: 0;
     width: 220px;
     height: 190px;
     background-size: 220px 190px;

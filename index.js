@@ -221,6 +221,9 @@ async function updateTotalLinesDisplay() {
     document.getElementById('containerHideLabel').style.pointerEvents = 'auto';
     document.getElementById('containerHideLabel').style.visibility = 'visible';
     document.getElementById('containerHideLabel').style.opacity = 1;
+    document.getElementById('containerWeaponStats').style.pointerEvents = 'auto';
+    document.getElementById('containerWeaponStats').style.visibility = 'visible';
+    document.getElementById('containerWeaponStats').style.opacity = 1;
     document.getElementById('share').style.opacity = 1;
     document.getElementById('result').style.display = 'flex';
     document.getElementById('share').style.pointerEvents = 'auto';
@@ -246,7 +249,7 @@ async function fetchUserStats() {
     const WTFintervalId = setInterval(() => {
         randomWhatTheFuck = Math.floor(Math.random()*WTF.length)
         document.getElementById("dataShowInfo").innerHTML = WTF[randomWhatTheFuck]
-    }, 2500);
+    }, 3500);
     loadingDiv.style.display = 'flex';
     document.getElementById('result').style.display = 'none';
     document.getElementById('errorMsg').style.display = 'none';
@@ -258,6 +261,9 @@ async function fetchUserStats() {
     document.getElementById('containerHideLabel').style.visibility = 'hidden';
     document.getElementById('containerHideLabel').style.pointerEvents = 'none';
     document.getElementById('containerHideLabel').style.opacity = 0.5;
+    document.getElementById('containerWeaponStats').style.visibility = 'hidden';
+    document.getElementById('containerWeaponStats').style.pointerEvents = 'none';
+    document.getElementById('containerWeaponStats').style.opacity = 0.5;
     document.getElementById('share').style.opacity = 0.5;
     resultDiv.innerHTML = '';
     if (chart) {
@@ -265,7 +271,7 @@ async function fetchUserStats() {
     }
     try {
         const response = await fetch(`https://github-stats-worker.gdata329947254.workers.dev/${username}`);
-
+    
         if (!response.ok) {
             if (response.status === 429) {
                 throw new Error('GITHUB_RATE_LIMIT');
@@ -276,14 +282,49 @@ async function fetchUserStats() {
             }
             throw new Error('USER_NOT_FOUND');
         }
-
+    
         const data = await response.json();
         const userData = data.user;
         const repos = data.repos;
-        userAvatarUrl = userData.avatar_url;
+        userAvatarUrl = userData.avatarUrl;
         totalLinesGlobal = data.commitTotal;
         await updateTotalLinesDisplay();
-        displayResults(data.commitTotal, data.totalRepoCommit);
+
+        const showLanguagesCheckbox = document.getElementById('weaponStats');
+
+        const formattedDate = new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: '2-digit', 
+            day: '2-digit' 
+        }).replace(/\//g, '');
+        const newNum = formattedDate + Math.floor(Math.random() * 1000) + 1
+
+        function handleCheckboxChange() {
+            const showLanguages = showLanguagesCheckbox.checked;
+            let weapons = false;
+            document.getElementById("hideLabels").checked = false;
+
+            if (showLanguages && data.languageStats?.percentages) {
+
+                const totalPercentage = 100;
+                const languageBreakdown = {};
+                Object.entries(data.languageStats.percentages)
+                    .sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))
+                    .forEach(([language, percentage]) => {
+                        languageBreakdown[language] = parseFloat(percentage);
+                    });
+
+                displayResults(totalPercentage, languageBreakdown, weapons, newNum);
+            } else {
+                weapons = true
+                displayResults(data.commitTotal, data.totalRepoCommit, weapons, newNum);
+            }
+        }
+
+        showLanguagesCheckbox.addEventListener('change', handleCheckboxChange);
+        handleCheckboxChange();
+
+    
     } catch (error) {
         resultDiv.innerHTML = `Error: ${error.message}`;
         document.getElementById('errorMsg').style.display = 'block';
@@ -303,9 +344,9 @@ async function fetchUserStats() {
     } finally {
         loadingDiv.style.display = 'none';
         document.getElementById('dataShowInfo').style.display = 'none';
-        document.getElementById('dataShowInfo').style.transform = 'translateY(0)'
-        document.getElementById("dataShowInfo").innerHTML = WTF[randomWhatTheFuck]
-        clearInterval(WTFintervalId)
+        document.getElementById('dataShowInfo').style.transform = 'translateY(0)';
+        document.getElementById("dataShowInfo").innerHTML = WTF[randomWhatTheFuck];
+        clearInterval(WTFintervalId);
     }
 }
 
@@ -313,9 +354,13 @@ async function fetchUserStats() {
 
 /* ------------- CHART[AMCHART] ------------- */
 
-function displayResults(totalLines, languages) {
+function displayResults(totalLines, languages, weapons, susID) {
     const formattedLines = formatNumber(totalLines);
-    resultDiv.innerHTML = `<h2>Total Commits: ${formattedLines}</h2>`;
+    if(weapons == true){
+        resultDiv.innerHTML = `<h2>Total Commits: ${formattedLines}</h2>`;
+    } else {
+        resultDiv.innerHTML = `<h2>Weapons Used</h2>`;
+    }
 
     let languagePercentages = Object.entries(languages).map(([lang, lines]) => {
         const percentage = (lines / totalLines) * 100;
@@ -445,154 +490,156 @@ function displayResults(totalLines, languages) {
 
 
 
-/* ------------- COPY-IMAGE ------------- */
+    /* ------------- COPY-IMAGE ------------- */
 
-const shareButton = document.querySelector('.shareOnSocial');
-shareButton.addEventListener('click', async () => {
-shareButton.innerHTML = 'Processing..';
-shareButton.style.backgroundColor = 'rgb(218, 204, 162, 0.5)';
-shareButton.style.border = '1px solid rgb(218, 204, 162, 0.5)';
-shareButton.style.pointerEvents = 'none';
+    const shareButton = document.querySelector('.shareOnSocial');
+    shareButton.addEventListener('click', async () => {
+    shareButton.innerHTML = 'Processing..';
+    shareButton.style.backgroundColor = 'rgb(218, 204, 162, 0.5)';
+    shareButton.style.border = '1px solid rgb(218, 204, 162, 0.5)';
+    shareButton.style.pointerEvents = 'none';
 
-const orgDiv = document.getElementById("chartContainer");
+    const orgDiv = document.getElementById("chartContainer");
 
-const clonedDiv = document.getElementById("clonedDiv");
-clonedDiv.innerHTML = '';
-const clonedChart = orgDiv.cloneNode(true);
-clonedDiv.appendChild(clonedChart);
+    const clonedDiv = document.getElementById("clonedDiv");
+    clonedDiv.innerHTML = '';
+    const clonedChart = orgDiv.cloneNode(true);
+    clonedDiv.appendChild(clonedChart);
 
-const labelContainer = clonedDiv.querySelector("label#container");
-const labelContainerHideLabel = clonedDiv.querySelector("label#containerHideLabel");
-const dataShowInfo = clonedDiv.querySelector("p#dataShowInfo");
-const loadingDiv = clonedDiv.querySelector("div#loading");
+    const labelContainer = clonedDiv.querySelector("label#container");
+    const labelContainerHideLabel = clonedDiv.querySelector("label#containerHideLabel");
+    const labelWeaponStats = clonedDiv.querySelector("label#containerWeaponStats");
+    const dataShowInfo = clonedDiv.querySelector("p#dataShowInfo");
+    const loadingDiv = clonedDiv.querySelector("div#loading");
 
-if (labelContainer) labelContainer.remove();
-if (labelContainerHideLabel) labelContainerHideLabel.remove();
-if (dataShowInfo) dataShowInfo.remove();
-if (loadingDiv) loadingDiv.remove();
+    if (labelContainer) labelContainer.remove();
+    if (labelContainerHideLabel) labelContainerHideLabel.remove();
+    if (labelWeaponStats) labelWeaponStats.remove();
+    if (dataShowInfo) dataShowInfo.remove();
+    if (loadingDiv) loadingDiv.remove();
 
-const formattedDate = new Date().toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: '2-digit', 
-    day: '2-digit' 
-}).replace(/\//g, '');
+    // const formattedDate = new Date().toLocaleDateString('en-US', { 
+    //     year: 'numeric', 
+    //     month: '2-digit', 
+    //     day: '2-digit' 
+    // }).replace(/\//g, '');
 
-const newNum = formattedDate + Math.floor(Math.random() * 1000) + 1
+    // const newNum = formattedDate + Math.floor(Math.random() * 1000) + 1
 
-const h1 = document.createElement("h1")
-h1.textContent = "#SuspectID: " + newNum
+    const h1 = document.createElement("h1")
+    h1.textContent = "#SuspectID: " + susID
 
-clonedDiv.prepend(h1)
+    clonedDiv.prepend(h1)
 
-const chartDivInClone = clonedDiv.querySelector("#chartdiv");
-if (chartDivInClone) {
-    chartDivInClone.remove();
-}
-
-const newChartDiv = document.createElement("div");
-newChartDiv.id = "chartdivClone";
-newChartDiv.style.width = "100%";
-newChartDiv.style.height = "100%";
-
-clonedDiv.querySelector(".chartData").appendChild(newChartDiv);
-
-let chartClone;
-if (chartClone) {
-    chartClone.dispose();
-}
-
-chartClone = am5.Root.new("chartdivClone");
-
-chartClone.setThemes([am5themes_Animated.new(chartClone)]);
-
-chartClone.container.children.push(am5.Rectangle.new(chartClone, {
-    fillOpacity: 1,
-    tooltipY: 0,
-    width: am5.percent(100),
-    height: am5.percent(100)
-}));
-
-const pieChartClone = chartClone.container.children.push(
-    am5percent.PieChart.new(chartClone, {
-        layout: chartClone.verticalLayout
-    })
-);
-
-const series = pieChartClone.series.push(
-    am5percent.PieSeries.new(chartClone, {
-        valueField: "value",
-        categoryField: "language"
-    })
-);
-
-series.set("tooltip", am5.Tooltip.new(chartClone, {
-    labelText: "{category}: [bold]{value.formatNumber('#.0')}%[/]"
-}));
-
-series.get("tooltip").label.setAll({
-    fontFamily: "Space Mono",
-    fontSize: 14,
-});
-
-series.data.setAll(languagePercentages);
-
-series.labels.template.setAll({
-    fontFamily: "Space Mono",
-    fontSize: 12,
-    text: "{category}: {value.formatNumber('#.0')}%",
-    fill: am5.color("#000000")
-});
-
-series.ticks.template.setAll({
-    forceHidden: true
-});
-
-const legend = pieChartClone.children.push(am5.Legend.new(chartClone, {
-    centerX: am5.percent(50),
-    x: am5.percent(50),
-    marginTop: 15,
-    marginBottom: 15
-}));
-
-legend.labels.template.setAll({
-    fontFamily: "Space Mono",
-    fill: am5.color("#000000"),
-    fontSize: 12
-});
-
-legend.valueLabels.template.setAll({
-    fontFamily: "Space Mono",
-    fill: am5.color("#000000"),
-    fontSize: 12
-});
-
-legend.data.setAll(series.dataItems);
-
-series.appear(1000, 100);
-
-setTimeout(async () => {
-    try {
-        const canvas = await html2canvas(clonedDiv, {
-            useCORS: true,
-            allowTaint: true,
-        });
-
-        canvas.toBlob(async (blob) => {
-            const item = new ClipboardItem({ "image/png": blob });
-            await navigator.clipboard.write([item]);
-
-            shareButton.innerHTML = 'Image Copied to Clipboard!';
-            setTimeout(() => {
-                shareButton.innerHTML = 'Copy Image';
-                shareButton.style.backgroundColor = 'rgb(218, 204, 162)';
-                shareButton.style.pointerEvents = 'auto';
-            }, 3000);
-        }, 'image/png');
-
-    } catch (err) {
-        console.error("Failed to copy image: ", err);
-        shareButton.innerHTML = 'Error!';
+    const chartDivInClone = clonedDiv.querySelector("#chartdiv");
+    if (chartDivInClone) {
+        chartDivInClone.remove();
     }
-}, 2000);
-});
+
+    const newChartDiv = document.createElement("div");
+    newChartDiv.id = "chartdivClone";
+    newChartDiv.style.width = "100%";
+    newChartDiv.style.height = "100%";
+
+    clonedDiv.querySelector(".chartData").appendChild(newChartDiv);
+
+    let chartClone;
+    if (chartClone) {
+        chartClone.dispose();
+    }
+
+    chartClone = am5.Root.new("chartdivClone");
+
+    chartClone.setThemes([am5themes_Animated.new(chartClone)]);
+
+    chartClone.container.children.push(am5.Rectangle.new(chartClone, {
+        fillOpacity: 1,
+        tooltipY: 0,
+        width: am5.percent(100),
+        height: am5.percent(100)
+    }));
+
+    const pieChartClone = chartClone.container.children.push(
+        am5percent.PieChart.new(chartClone, {
+            layout: chartClone.verticalLayout
+        })
+    );
+
+    const series = pieChartClone.series.push(
+        am5percent.PieSeries.new(chartClone, {
+            valueField: "value",
+            categoryField: "language"
+        })
+    );
+
+    series.set("tooltip", am5.Tooltip.new(chartClone, {
+        labelText: "{category}: [bold]{value.formatNumber('#.0')}%[/]"
+    }));
+
+    series.get("tooltip").label.setAll({
+        fontFamily: "Space Mono",
+        fontSize: 14,
+    });
+
+    series.data.setAll(languagePercentages);
+
+    series.labels.template.setAll({
+        fontFamily: "Space Mono",
+        fontSize: 12,
+        text: "{category}: {value.formatNumber('#.0')}%",
+        fill: am5.color("#000000")
+    });
+
+    series.ticks.template.setAll({
+        forceHidden: true
+    });
+
+    const legend = pieChartClone.children.push(am5.Legend.new(chartClone, {
+        centerX: am5.percent(50),
+        x: am5.percent(50),
+        marginTop: 15,
+        marginBottom: 15
+    }));
+
+    legend.labels.template.setAll({
+        fontFamily: "Space Mono",
+        fill: am5.color("#000000"),
+        fontSize: 12
+    });
+
+    legend.valueLabels.template.setAll({
+        fontFamily: "Space Mono",
+        fill: am5.color("#000000"),
+        fontSize: 12
+    });
+
+    legend.data.setAll(series.dataItems);
+
+    series.appear(1000, 100);
+
+    setTimeout(async () => {
+        try {
+            const canvas = await html2canvas(clonedDiv, {
+                useCORS: true,
+                allowTaint: true,
+            });
+
+            canvas.toBlob(async (blob) => {
+                const item = new ClipboardItem({ "image/png": blob });
+                await navigator.clipboard.write([item]);
+
+                shareButton.innerHTML = 'Image Copied to Clipboard!';
+                setTimeout(() => {
+                    shareButton.innerHTML = 'Copy Image';
+                    shareButton.style.backgroundColor = 'rgb(218, 204, 162)';
+                    shareButton.style.pointerEvents = 'auto';
+                }, 3000);
+            }, 'image/png');
+
+        } catch (err) {
+            console.error("Failed to copy image: ", err);
+            shareButton.innerHTML = 'Error!';
+        }
+    }, 2000);
+    });
 }
