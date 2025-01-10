@@ -245,6 +245,11 @@ async function fetchUserStats() {
     document.getElementById("dataShowInfo").style.boxShadow = "none"
     document.getElementById("dataShowInfo").style.color = "#000000"
     document.getElementById("dataShowInfo").style.fontWeight = "normal"
+    if(window.innerWidth>1300){
+        document.getElementById("dataShowInfo").style.marginTop = "6em"
+    } else {
+        document.getElementById("dataShowInfo").style.marginTop = "2em"
+    }
     const WTFintervalId = setInterval(() => {
         randomWhatTheFuck = Math.floor(Math.random()*WTF.length)
         document.getElementById("dataShowInfo").innerHTML = WTF[randomWhatTheFuck]
