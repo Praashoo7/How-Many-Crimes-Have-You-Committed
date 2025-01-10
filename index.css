@@ -448,6 +448,7 @@ h1{
     position: absolute;
     transform: translateX(0%) translateY(-50%);
     padding: 0.5em 2em 0.5em 2em !important;
+    margin-top: 7em;
 }
 
 
@@ -577,14 +578,11 @@ h1{
 
 @media screen and (max-width: 1300px) {
     #dataShowInfo, #loading{
-        margin-left: auto;
-        margin-right: auto;
-        left: 0;
-        right: 0;
         top: 40%;
     }
     #dataShowInfo{
         top: 50%;
+        margin-top: 3em;
     }
     .userData{
         height: 100%;

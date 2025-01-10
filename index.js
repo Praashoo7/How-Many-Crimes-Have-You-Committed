@@ -245,7 +245,6 @@ async function fetchUserStats() {
     document.getElementById("dataShowInfo").style.boxShadow = "none"
     document.getElementById("dataShowInfo").style.color = "#000000"
     document.getElementById("dataShowInfo").style.fontWeight = "normal"
-    document.getElementById('dataShowInfo').style.transform = 'translateY(3em)'
     const WTFintervalId = setInterval(() => {
         randomWhatTheFuck = Math.floor(Math.random()*WTF.length)
         document.getElementById("dataShowInfo").innerHTML = WTF[randomWhatTheFuck]
