@@ -492,10 +492,20 @@ h1{
 .shareStar{
     display: flex;
     align-items: end;
-    justify-content: end;
+    justify-content: space-between;
     margin-top: 1em;
     width: 100%;
     max-width: 1280px;
+}
+.left{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.5em;
+}
+.me img{
+    width: 20px;
+    height: 20px;
 }
 .star svg{
     width: 15px;
@@ -506,9 +516,10 @@ h1{
     opacity: 0.5;
     pointer-events: none;
 }
-.shareOnSocial, .star{
+.shareOnSocial, .star, .me{
     width: max-content;
-    background-color: #dacca2;
+    background-color: #dbd6d2;
+    background-image: url(imgs/textures/Corrugation.png);
     box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 0px;
     border: none;
     outline: none;
@@ -516,14 +527,20 @@ h1{
     font-family: Space Mono;
     padding: 0.5em 0.75em 0.5em 0.75em;
 }
+.me{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4em 0.5em 0.4em 0.5em;
+}
 .star{
     font-size: 0.8em;
 }
-.shareOnSocial:hover, .star:hover{
-    opacity: 0.85;
+.shareOnSocial:hover, .star:hover, .me:hover{
+    background-color: rgb(218, 204, 162, 0.75);
     cursor: pointer;
 }
-.star:active{
+.star:active, .me:active{
     box-shadow: none;
     scale: 0.99;
 }
@@ -669,6 +686,14 @@ h1{
         width: auto;
     }
 }
+@media screen and (max-width: 445px) {
+    .shareStar{
+        align-items: end;
+        gap: 0.5em;
+        justify-content: end;
+        flex-direction: column-reverse;
+    }
+}
 @media screen and (max-width: 425px) {
     .pin {
         margin-left: -1.5em;
@@ -677,12 +702,6 @@ h1{
         width: 200px;
         height: 200px;
         background-size: 200px 200px;
-    }
-    .shareStar{
-        align-items: end;
-        gap: 1em;
-        justify-content: end;
-        flex-direction: column;
     }
 }
 
