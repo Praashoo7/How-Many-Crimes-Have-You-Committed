@@ -494,10 +494,17 @@ function displayResults(totalLines, languages, weapons, susID) {
 
     const shareButton = document.querySelector('.shareOnSocial');
     shareButton.addEventListener('click', async () => {
-    shareButton.innerHTML = 'Processing..';
-    shareButton.style.backgroundColor = 'rgb(218, 204, 162, 0.5)';
-    shareButton.style.border = '1px solid rgb(218, 204, 162, 0.5)';
-    shareButton.style.pointerEvents = 'none';
+        event.preventDefault();
+    
+        shareButton.innerHTML = 'Processing..';
+        shareButton.style.backgroundColor = 'rgb(218, 204, 162, 0.5)';
+        shareButton.style.border = '1px solid rgb(218, 204, 162, 0.5)';
+        shareButton.style.pointerEvents = 'none';
+    
+        // Add event listener to prevent paste reload
+        document.addEventListener('paste', (e) => {
+            e.preventDefault();
+        }, { once: true });
 
     const orgDiv = document.getElementById("chartContainer");
 
@@ -641,5 +648,12 @@ function displayResults(totalLines, languages, weapons, susID) {
             shareButton.innerHTML = 'Error!';
         }
     }, 2000);
+    });
+    document.addEventListener('paste', (e) => {
+        const activeElement = document.activeElement;
+        // Only prevent default if we're not in an input or textarea
+        if (activeElement.tagName !== 'INPUT' && activeElement.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+        }
     });
 }

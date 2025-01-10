@@ -722,7 +722,8 @@ h1{
     position: absolute;
     min-width: 1400px;
     z-index: 100;
-
+    left: -10000px;
+    top: -10000px;
     background-color: #dacca2;
     background-image: url(imgs/textures/p2.png);
     height: max-content;
