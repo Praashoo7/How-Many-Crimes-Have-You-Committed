@@ -489,17 +489,24 @@ h1{
 
 /* ----------------------------------- SHARE -----------------------------------*/
 
-.share{
+.shareStar{
     display: flex;
     align-items: end;
     justify-content: end;
     margin-top: 1em;
     width: 100%;
-    opacity: 0.5;
-    pointer-events: none;
     max-width: 1280px;
 }
-.shareOnSocial{
+.star svg{
+    width: 15px;
+    height: 15px;
+    transform: translateY(0.2em);
+}
+.share{
+    opacity: 0.5;
+    pointer-events: none;
+}
+.shareOnSocial, .star{
     width: max-content;
     background-color: #dacca2;
     box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 0px;
@@ -509,9 +516,16 @@ h1{
     font-family: Space Mono;
     padding: 0.5em 0.75em 0.5em 0.75em;
 }
-.shareOnSocial:hover{
+.star{
+    font-size: 0.8em;
+}
+.shareOnSocial:hover, .star:hover{
     opacity: 0.85;
     cursor: pointer;
+}
+.star:active{
+    box-shadow: none;
+    scale: 0.99;
 }
 
 
@@ -668,6 +682,12 @@ h1{
         height: 200px;
         background-size: 200px 200px;
     }
+    .shareStar{
+        align-items: end;
+        gap: 1em;
+        justify-content: end;
+        flex-direction: column;
+    }
 }
 
 
@@ -695,7 +715,7 @@ h1{
   }
   
   @media only screen and (max-width: 279px) {
-    .top, .chartContainer, .share{
+    .top, .chartContainer, .shareStar{
         display: none;
     }
     body{

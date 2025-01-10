@@ -644,6 +644,12 @@ function displayResults(totalLines, languages, weapons, susID) {
             }, 'image/png');
 
         } catch (err) {
+            shareButton.innerHTML = 'Failed to copy image!';
+                setTimeout(() => {
+                    shareButton.innerHTML = 'Copy Image';
+                    shareButton.style.backgroundColor = 'rgb(218, 204, 162)';
+                    shareButton.style.pointerEvents = 'auto';
+            }, 3000);
             console.error("Failed to copy image: ", err);
             shareButton.innerHTML = 'Error!';
         }
