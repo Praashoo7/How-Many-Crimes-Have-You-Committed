@@ -344,7 +344,6 @@ async function fetchUserStats() {
     } finally {
         loadingDiv.style.display = 'none';
         document.getElementById('dataShowInfo').style.display = 'none';
-        document.getElementById('dataShowInfo').style.transform = 'translateY(0)';
         document.getElementById("dataShowInfo").innerHTML = WTF[randomWhatTheFuck];
         clearInterval(WTFintervalId);
     }
