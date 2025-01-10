@@ -665,3 +665,11 @@ function displayResults(totalLines, languages, weapons, susID) {
         }
     });
 }
+
+
+
+/* ----------------------------- MAINLOADER-ONLOAD ----------------------------- */
+
+// window.onload = function () {
+//     document.querySelector("#mainLoader").style.display = 'none';
+// };
