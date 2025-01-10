@@ -446,6 +446,7 @@ h1{
 
 #dataShowInfo{
     position: absolute;
+    transform: translateX(0%) translateY(-50%);
     padding: 0.5em 2em 0.5em 2em !important;
 }
 
