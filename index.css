@@ -603,7 +603,7 @@ h1{
         margin-left: 22em;
     }
 }
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1035px) {
     #chartdiv {
         position: relative;
         width: 100% !important;
