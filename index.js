@@ -651,7 +651,6 @@ function displayResults(totalLines, languages, weapons, susID) {
     });
     document.addEventListener('paste', (e) => {
         const activeElement = document.activeElement;
-        // Only prevent default if we're not in an input or textarea
         if (activeElement.tagName !== 'INPUT' && activeElement.tagName !== 'TEXTAREA') {
             e.preventDefault();
         }
