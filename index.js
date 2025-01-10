@@ -270,7 +270,7 @@ async function fetchUserStats() {
         chart.dispose();
     }
     try {
-        const response = await fetch(`https://github-stats-worker.gdata329947254.workers.dev/${username}`);
+        const response = await fetch(`https://github-stats-worker.gdata85416.workers.dev/${username}`);
     
         if (!response.ok) {
             if (response.status === 429) {
