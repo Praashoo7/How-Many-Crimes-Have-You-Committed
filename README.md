@@ -5,7 +5,7 @@ Hey, code criminal! Uncover the dark secrets of your commit history, every crime
 ![Readme Image](imgs/ReadMe-Images/ReadMe-Image.png)<br><br>
 
 
-# Copy the Image and share it on your Socials to raise awareness!
+# Copy the Image and share it on your Socials to raise awareness.
 
 ![Readme Image1](imgs/ReadMe-Images/ReadMe-Image1.png)
 
