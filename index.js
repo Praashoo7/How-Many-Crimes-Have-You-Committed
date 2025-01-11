@@ -165,11 +165,11 @@ async function updateTotalLinesDisplay() {
         criminalStatus = "Law-abiding Bitch!";
     } else if (totalLinesGlobal < 500) {
         criminalStatus = "Petty Criminal";
-    } else if (totalLinesGlobal < 1000) {
-        criminalStatus = "White Collar Criminal";
     } else if (totalLinesGlobal < 2000) {
-        criminalStatus = "Career Criminal";
+        criminalStatus = "White Collar Criminal";
     } else if (totalLinesGlobal < 5000) {
+        criminalStatus = "Career Criminal";
+    } else if (totalLinesGlobal < 10000) {
         criminalStatus = "Violent Criminal";
     } else {
         criminalStatus = "Most Wanted";
