@@ -658,6 +658,9 @@ function displayResults(totalLines, languages, weapons, susID) {
 
 /* ----------------------------- MAINLOADER-ONLOAD ----------------------------- */
 
-// window.onload = function () {
-//     document.querySelector("#mainLoader").style.display = 'none';
-// };
+window.onload = function () {
+    document.querySelector("#mainLoader").style.opacity = 0;
+    setTimeout(() => {
+        document.querySelector("#mainLoader").style.display = 'none';
+    }, 400);
+};
