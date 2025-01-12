@@ -98,6 +98,7 @@ h1{
     border: none;
     padding: 0.5em 0.5em 0.45em 0.5em;
     outline: none;
+    text-transform: lowercase;
     margin-bottom: 1em;
     background: url(imgs/textures/textFieldPaper.jpg);
     background-size: 220px 35px;
@@ -107,6 +108,7 @@ h1{
 }
 #username::placeholder{
     color: rgb(0, 0, 0, 0.3);
+    text-transform: initial;
 }
 #submit {
     padding: 0.25em 0.75em 0.33em 0.75em;
@@ -641,7 +643,7 @@ h1{
         margin-left: 22em;
     }
 }
-@media screen and (max-width: 1035px) {
+@media screen and (max-width: 1100px) {
     #chartdiv {
         position: relative;
         width: 100% !important;

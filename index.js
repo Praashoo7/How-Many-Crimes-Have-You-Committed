@@ -98,7 +98,7 @@ submitButton.addEventListener('click', fetchUserStats);
 textChangeCheckbox.addEventListener('change', updateTotalLinesDisplay);
 
 function formatNumber(num) {
-    if (textChangeCheckbox.checked) {
+    if (textChangeCheckbox.checked & num>0 & !document.getElementById('weaponStats').checked) {
         const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd", "Nod", "Vg"];
         const order = Math.floor(Math.log10(num) / 3);
         if (order < suffixes.length) {
@@ -113,16 +113,18 @@ function formatNumber(num) {
     }
 }
 
-async function updateTotalLinesDisplay() {
-    const formattedLines = formatNumber(totalLinesGlobal);
-    const username = document.getElementById('username').value;
-
-    let totalLinesElement = document.querySelector('#result h2');
-    if (!totalLinesElement) {
-        totalLinesElement = document.createElement('h2');
-        document.getElementById('result').appendChild(totalLinesElement);
+async function updateTotalLinesDisplay(mainDate) {
+    const username = document.getElementById('username').value; 
+    if(!document.getElementById('weaponStats').checked){
+        const formattedLines = formatNumber(totalLinesGlobal);
+    
+        let totalLinesElement = document.querySelector('#result h2');
+        if (!totalLinesElement) {
+            totalLinesElement = document.createElement('h2');
+            document.getElementById('result').appendChild(totalLinesElement);
+        }
+        totalLinesElement.textContent = `Total Commits: ${formattedLines}`;
     }
-    totalLinesElement.textContent = `Total Commits: ${formattedLines}`;
 
     let avatarElement = document.querySelector('#resultUser img');
     if (!avatarElement) {
@@ -162,7 +164,7 @@ async function updateTotalLinesDisplay() {
 
     let criminalStatus;
     if (totalLinesGlobal == 0){
-        criminalStatus = "Law-abiding Bitch!";
+        criminalStatus = "Captain Clean!";
     } else if (totalLinesGlobal < 500) {
         criminalStatus = "Petty Criminal";
     } else if (totalLinesGlobal < 2000) {
@@ -176,33 +178,17 @@ async function updateTotalLinesDisplay() {
     }
     criminalStatusElement.textContent = criminalStatus;
 
-    async function getGitHubSignupDate(username) {
-        try {
-            const response = await fetch(`https://api.github.com/users/${username}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            return new Date(data.created_at);
-        } catch (error) {
-            console.error("Error fetching GitHub user data:", error);
-            return null;
-        }
+    let criminalBornElement = document.querySelector('#resultUser p');
+    if (!criminalBornElement) {
+        criminalBornElement = document.createElement('p');
+        document.getElementById('resultUser').appendChild(criminalBornElement);
     }
-
-    getGitHubSignupDate(username).then(date => {
-        if (date) {
-            let criminalBornElement = document.querySelector('#resultUser p');
-            if (!criminalBornElement) {
-                criminalBornElement = document.createElement('p');
-                document.getElementById('resultUser').appendChild(criminalBornElement);
-            }
-            // document.getElementById('firstCrimeDate').innerHTML = date.toLocaleDateString()
-            criminalBornElement.innerHTML = "Criminal Activities Since: " + date.toLocaleDateString()
-        } else {
-            console.log("Couldn't retrieve signup date");
-        }
-    });
+    // document.getElementById('firstCrimeDate').innerHTML = date.toLocaleDateString()
+    if (totalLinesGlobal != 0){
+        criminalBornElement.innerHTML = "Criminal Activities Since: " + mainDate.split('T')[0]
+    } else {
+        criminalBornElement.innerHTML = "Waste of Space Since: " + mainDate.split('T')[0]
+    }
 
 
     const userDataElement = document.getElementById('userData');
@@ -274,7 +260,7 @@ async function fetchUserStats() {
         chart.dispose();
     }
     try {
-        const response = await fetch(`https://github-stats-worker.gdata85416.workers.dev/${username}`);
+        const response = await fetch(`https://tight-fog-abb1.gdata85416.workers.dev/${username}`);
     
         if (!response.ok) {
             if (response.status === 429) {
@@ -292,7 +278,7 @@ async function fetchUserStats() {
         const repos = data.repos;
         userAvatarUrl = userData.avatarUrl;
         totalLinesGlobal = data.commitTotal;
-        await updateTotalLinesDisplay();
+        await updateTotalLinesDisplay(data.user.createdAt, data.user.name);
 
         const showLanguagesCheckbox = document.getElementById('weaponStats');
 
@@ -303,30 +289,40 @@ async function fetchUserStats() {
         }).replace(/\//g, '');
         const newNum = formattedDate + Math.floor(Math.random() * 1000) + 1
 
-        function handleCheckboxChange() {
-            const showLanguages = showLanguagesCheckbox.checked;
-            let weapons = false;
-            document.getElementById("hideLabels").checked = false;
+        if(data.commitTotal == 0){
+            let weapons = true;
+            const totalPercentage = 100;
+            const languageBreakdown = {};
+            Object.entries(data.languageStats.percentages)
+                .sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))
+                .forEach(([language, percentage]) => {
+                    languageBreakdown[language] = parseFloat(percentage);
+                });
+            displayResults(data.commitTotal, data.totalRepoCommit, weapons, newNum);
+        } else {
+            function handleCheckboxChange() {
+                const showLanguages = showLanguagesCheckbox.checked;
+                let weapons = false;
+                document.getElementById("hideLabels").checked = false;
 
-            if (showLanguages && data.languageStats?.percentages) {
+                if (showLanguages && data.languageStats?.percentages) {
 
-                const totalPercentage = 100;
-                const languageBreakdown = {};
-                Object.entries(data.languageStats.percentages)
-                    .sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))
-                    .forEach(([language, percentage]) => {
-                        languageBreakdown[language] = parseFloat(percentage);
-                    });
-
-                displayResults(totalPercentage, languageBreakdown, weapons, newNum);
-            } else {
-                weapons = true
-                displayResults(data.commitTotal, data.totalRepoCommit, weapons, newNum);
+                    const totalPercentage = 100;
+                    const languageBreakdown = {};
+                    Object.entries(data.languageStats.percentages)
+                        .sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))
+                        .forEach(([language, percentage]) => {
+                            languageBreakdown[language] = parseFloat(percentage);
+                        });
+                    displayResults(totalPercentage, languageBreakdown, weapons, newNum);
+                } else {
+                    weapons = true
+                    displayResults(data.commitTotal, data.totalRepoCommit, weapons, newNum);
+                }
             }
+            showLanguagesCheckbox.addEventListener('change', handleCheckboxChange);
+            handleCheckboxChange();
         }
-
-        showLanguagesCheckbox.addEventListener('change', handleCheckboxChange);
-        handleCheckboxChange();
 
     
     } catch (error) {
@@ -359,32 +355,39 @@ async function fetchUserStats() {
 
 function displayResults(totalLines, languages, weapons, susID) {
     const formattedLines = formatNumber(totalLines);
-    if(weapons == true){
+
+    if (weapons == true) {
         resultDiv.innerHTML = `<h2>Total Commits: ${formattedLines}</h2>`;
     } else {
         resultDiv.innerHTML = `<h2>Weapons Used</h2>`;
     }
 
-    let languagePercentages = Object.entries(languages).map(([lang, lines]) => {
-        const percentage = (lines / totalLines) * 100;
-        return { language: lang, value: percentage };
-    }).sort((a, b) => b.value - a.value);
+    let languagePercentages = [];
+    if (totalLines > 0) {
+        languagePercentages = Object.entries(languages).map(([lang, lines]) => {
+            const percentage = (lines / totalLines) * 100;
+            return { language: lang, value: percentage };
+        }).sort((a, b) => b.value - a.value);
 
-    const threshold = 1;
-    let otherPercentage = 0;
-    languagePercentages = languagePercentages.filter(lang => {
-        if (lang.value < threshold) {
-            otherPercentage += lang.value;
-            return false;
+        const threshold = 1;
+        let otherPercentage = 0;
+        languagePercentages = languagePercentages.filter(lang => {
+            if (lang.value < threshold) {
+                otherPercentage += lang.value;
+                return false;
+            }
+            return true;
+        });
+
+        if (otherPercentage > 0) {
+            languagePercentages.push({ language: "Other", value: otherPercentage });
         }
-        return true;
-    });
 
-    if (otherPercentage > 0) {
-        languagePercentages.push({ language: "Other", value: otherPercentage });
+        languagePercentages.sort((a, b) => b.value - a.value);
+    } else {
+        // Add a placeholder dataset for an empty chart
+        languagePercentages.push({ language: "No Data", value: 100 });
     }
-
-    languagePercentages.sort((a, b) => b.value - a.value);
 
     if (chart) {
         chart.dispose();
@@ -393,13 +396,6 @@ function displayResults(totalLines, languages, weapons, susID) {
     chart = am5.Root.new("chartdiv");
 
     chart.setThemes([am5themes_Animated.new(chart)]);
-
-    chart.container.children.push(am5.Rectangle.new(chart, {
-        fillOpacity: 1,
-        tooltipY: 0,
-        width: am5.percent(100),
-        height: am5.percent(100)
-    }));
 
     const pieChart = chart.container.children.push(
         am5percent.PieChart.new(chart, {
@@ -427,20 +423,20 @@ function displayResults(totalLines, languages, weapons, susID) {
 
     series.labels.template.setAll({
         fontFamily: "Space Mono",
-        fontSize: 0,
+        fontSize: totalLines === 0 ? 16 : 0, // Show "No Data" prominently if no commits
         text: "{category}: {value.formatNumber('#.0')}%",
         fill: am5.color("#000000")
     });
 
     series.ticks.template.setAll({
-        forceHidden: false
+        forceHidden: totalLines === 0 // Hide ticks when there is no data
     });
 
     const labelHideCheckbox = document.getElementById('hideLabels');
     labelHideCheckbox.addEventListener('change', hideLabels);
 
-    function hideLabels(){
-        if(labelHideCheckbox.checked){
+    function hideLabels() {
+        if (labelHideCheckbox.checked) {
             series.labels.template.setAll({
                 visible: false
             });
