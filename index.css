@@ -183,8 +183,7 @@ h1{
     padding: 2em;
     margin-top: 1em;
     color: black;
-
-    max-width: 1280px;
+    max-width: 1320px;
     background-image: url(imgs/textures/p2.png);
     background-color: #c6bcad;
     box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
@@ -522,7 +521,7 @@ h1{
     justify-content: space-between;
     margin-top: 1em;
     width: 100%;
-    max-width: 1280px;
+    max-width: 1320px;
 }
 .left{
     display: flex;

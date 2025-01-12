@@ -280,6 +280,11 @@ async function fetchUserStats() {
         totalLinesGlobal = data.commitTotal;
         await updateTotalLinesDisplay(data.user.createdAt, data.user.name);
 
+        document.getElementById('containerWeaponStats').style.pointerEvents = 'block'
+        if(data.commitTotal == 0){
+            document.getElementById('containerWeaponStats').style.pointerEvents = 'none'
+        }
+
         const showLanguagesCheckbox = document.getElementById('weaponStats');
 
         const formattedDate = new Date().toLocaleDateString('en-US', { 
@@ -289,41 +294,28 @@ async function fetchUserStats() {
         }).replace(/\//g, '');
         const newNum = formattedDate + Math.floor(Math.random() * 1000) + 1
 
-        if(data.commitTotal == 0){
-            let weapons = true;
-            const totalPercentage = 100;
-            const languageBreakdown = {};
-            Object.entries(data.languageStats.percentages)
-                .sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))
-                .forEach(([language, percentage]) => {
-                    languageBreakdown[language] = parseFloat(percentage);
-                });
-            displayResults(data.commitTotal, data.totalRepoCommit, weapons, newNum);
-        } else {
-            function handleCheckboxChange() {
-                const showLanguages = showLanguagesCheckbox.checked;
-                let weapons = false;
-                document.getElementById("hideLabels").checked = false;
+        function handleCheckboxChange() {
+            const showLanguages = showLanguagesCheckbox.checked;
+            let weapons = false;
+            document.getElementById("hideLabels").checked = false;
 
-                if (showLanguages && data.languageStats?.percentages) {
+            if (showLanguages && data.languageStats?.percentages) {
 
-                    const totalPercentage = 100;
-                    const languageBreakdown = {};
-                    Object.entries(data.languageStats.percentages)
-                        .sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))
-                        .forEach(([language, percentage]) => {
-                            languageBreakdown[language] = parseFloat(percentage);
-                        });
-                    displayResults(totalPercentage, languageBreakdown, weapons, newNum);
-                } else {
-                    weapons = true
-                    displayResults(data.commitTotal, data.totalRepoCommit, weapons, newNum);
-                }
+                const totalPercentage = 100;
+                const languageBreakdown = {};
+                Object.entries(data.languageStats.percentages)
+                    .sort((a, b) => parseFloat(b[1]) - parseFloat(a[1]))
+                    .forEach(([language, percentage]) => {
+                        languageBreakdown[language] = parseFloat(percentage);
+                    });
+                displayResults(totalPercentage, languageBreakdown, weapons, newNum);
+            } else {
+                weapons = true
+                displayResults(data.commitTotal, data.totalRepoCommit, weapons, newNum);
             }
-            showLanguagesCheckbox.addEventListener('change', handleCheckboxChange);
-            handleCheckboxChange();
         }
-
+        showLanguagesCheckbox.addEventListener('change', handleCheckboxChange);
+        handleCheckboxChange();
     
     } catch (error) {
         resultDiv.innerHTML = `Error: ${error.message}`;
