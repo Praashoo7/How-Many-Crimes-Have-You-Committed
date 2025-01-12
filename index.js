@@ -270,7 +270,7 @@ async function fetchUserStats() {
             } else if (response.status === 404) {
                 throw new Error('USER_NOT_FOUND');
             }
-            throw new Error('USER_NOT_FOUND');
+            throw new Error('SOMETHING_WENT_WRONG');
         }
     
         const data = await response.json();
