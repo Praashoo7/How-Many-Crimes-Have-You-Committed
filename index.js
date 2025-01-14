@@ -361,23 +361,21 @@ function displayResults(totalLines, languages, weapons, susID) {
             return { language: lang, value: percentage };
         }).sort((a, b) => b.value - a.value);
 
-        const threshold = 1;
-        let otherPercentage = 0;
-        languagePercentages = languagePercentages.filter(lang => {
-            if (lang.value < threshold) {
-                otherPercentage += lang.value;
-                return false;
-            }
-            return true;
-        });
+        if (languagePercentages.length > 19) {
+            const topRepos = languagePercentages.slice(0, 19);
 
-        if (otherPercentage > 0) {
-            languagePercentages.push({ language: "Other", value: otherPercentage });
+            const otherPercentage = languagePercentages
+                .slice(19)
+                .reduce((sum, lang) => sum + lang.value, 0);
+
+            languagePercentages = [
+                ...topRepos,
+                { language: "Other", value: otherPercentage }
+            ];
         }
 
         languagePercentages.sort((a, b) => b.value - a.value);
     } else {
-        // Add a placeholder dataset for an empty chart
         languagePercentages.push({ language: "No Data", value: 100 });
     }
 
@@ -415,13 +413,13 @@ function displayResults(totalLines, languages, weapons, susID) {
 
     series.labels.template.setAll({
         fontFamily: "Space Mono",
-        fontSize: totalLines === 0 ? 16 : 0, // Show "No Data" prominently if no commits
+        fontSize: totalLines === 0 ? 12 : 0,
         text: "{category}: {value.formatNumber('#.0')}%",
         fill: am5.color("#000000")
     });
 
     series.ticks.template.setAll({
-        forceHidden: totalLines === 0 // Hide ticks when there is no data
+        forceHidden: totalLines === 0
     });
 
     const labelHideCheckbox = document.getElementById('hideLabels');
