@@ -361,11 +361,11 @@ function displayResults(totalLines, languages, weapons, susID) {
             return { language: lang, value: percentage };
         }).sort((a, b) => b.value - a.value);
 
-        if (languagePercentages.length > 19) {
-            const topRepos = languagePercentages.slice(0, 19);
+        if (languagePercentages.length > 14) {
+            const topRepos = languagePercentages.slice(0, 14);
 
             const otherPercentage = languagePercentages
-                .slice(19)
+                .slice(14)
                 .reduce((sum, lang) => sum + lang.value, 0);
 
             languagePercentages = [
