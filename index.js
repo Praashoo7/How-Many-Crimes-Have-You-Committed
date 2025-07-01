@@ -354,29 +354,21 @@ function displayResults(totalLines, languages, weapons, susID) {
         resultDiv.innerHTML = `<h2>Weapons Used</h2>`;
     }
 
-    let languagePercentages = [];
+    let languageData = [];
+
     if (totalLines > 0) {
-        languagePercentages = Object.entries(languages).map(([lang, lines]) => {
-            const percentage = (lines / totalLines) * 100;
-            return { language: lang, value: percentage };
+        languageData = Object.entries(languages).map(([lang, lines]) => {
+            return { language: lang, value: Number(lines) };
         }).sort((a, b) => b.value - a.value);
 
-        if (languagePercentages.length > 14) {
-            const topRepos = languagePercentages.slice(0, 14);
-
-            const otherPercentage = languagePercentages
-                .slice(14)
-                .reduce((sum, lang) => sum + lang.value, 0);
-
-            languagePercentages = [
-                ...topRepos,
-                { language: "Other", value: otherPercentage }
-            ];
+        if (languageData.length > 14) {
+            const top = languageData.slice(0, 14);
+            const others = languageData.slice(14);
+            const otherTotal = others.reduce((sum, lang) => sum + lang.value, 0);
+            languageData = [...top, { language: "Other", value: otherTotal }];
         }
-
-        languagePercentages.sort((a, b) => b.value - a.value);
     } else {
-        languagePercentages.push({ language: "No Data", value: 100 });
+        languageData.push({ language: "No Data", value: 1 });
     }
 
     if (chart) {
@@ -401,7 +393,7 @@ function displayResults(totalLines, languages, weapons, susID) {
     );
 
     series.set("tooltip", am5.Tooltip.new(chart, {
-        labelText: "{category}: [bold]{value.formatNumber('#.0')}%[/]"
+        labelText: "{category}: [bold]{valuePercentTotal.formatNumber('#.0')}%[/]"
     }));
 
     series.get("tooltip").label.setAll({
@@ -409,12 +401,12 @@ function displayResults(totalLines, languages, weapons, susID) {
         fontSize: 14,
     });
 
-    series.data.setAll(languagePercentages);
+    series.data.setAll(languageData);
 
     series.labels.template.setAll({
         fontFamily: "Space Mono",
         fontSize: totalLines === 0 ? 12 : 0,
-        text: "{category}: {value.formatNumber('#.0')}%",
+        text: "{category}: {valuePercentTotal.formatNumber('#.0')}%",
         fill: am5.color("#000000")
     });
 
@@ -426,21 +418,9 @@ function displayResults(totalLines, languages, weapons, susID) {
     labelHideCheckbox.addEventListener('change', hideLabels);
 
     function hideLabels() {
-        if (labelHideCheckbox.checked) {
-            series.labels.template.setAll({
-                visible: false
-            });
-            series.ticks.template.setAll({
-                forceHidden: true
-            });
-        } else {
-            series.labels.template.setAll({
-                visible: true
-            });
-            series.ticks.template.setAll({
-                forceHidden: false
-            });
-        }
+        const hide = labelHideCheckbox.checked;
+        series.labels.template.setAll({ visible: !hide });
+        series.ticks.template.setAll({ forceHidden: hide });
     }
 
     const legend = pieChart.children.push(am5.Legend.new(chart, {
@@ -569,7 +549,7 @@ function displayResults(totalLines, languages, weapons, susID) {
     );
 
     series.set("tooltip", am5.Tooltip.new(chartClone, {
-        labelText: "{category}: [bold]{value.formatNumber('#.0')}%[/]"
+        text: "{category}: {valuePercentTotal.formatNumber('#.0')}%",
     }));
 
     series.get("tooltip").label.setAll({
@@ -577,12 +557,12 @@ function displayResults(totalLines, languages, weapons, susID) {
         fontSize: 14,
     });
 
-    series.data.setAll(languagePercentages);
+    series.data.setAll(languageData);
 
     series.labels.template.setAll({
         fontFamily: "Space Mono",
         fontSize: 12,
-        text: "{category}: {value.formatNumber('#.0')}%",
+        text: "{category}: {valuePercentTotal.formatNumber('#.0')}%",
         fill: am5.color("#000000")
     });
 
