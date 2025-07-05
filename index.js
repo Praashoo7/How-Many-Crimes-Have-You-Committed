@@ -165,6 +165,8 @@ async function updateTotalLinesDisplay(mainDate) {
     let criminalStatus;
     if (totalLinesGlobal == 0){
         criminalStatus = "Captain Clean!";
+    } else if (totalLinesGlobal < 500 && username == "designerdada") {
+        criminalStatus = "Pretty Criminal";
     } else if (totalLinesGlobal < 500) {
         criminalStatus = "Petty Criminal";
     } else if (totalLinesGlobal < 2000) {
