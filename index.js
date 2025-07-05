@@ -166,7 +166,7 @@ async function updateTotalLinesDisplay(mainDate) {
     if (totalLinesGlobal == 0){
         criminalStatus = "Captain Clean!";
     } else if (totalLinesGlobal < 500 && username == "designerdada") {
-        criminalStatus = "Pretty Criminal";
+        criminalStatus = "Pretty Criminal🌸";
     } else if (totalLinesGlobal < 500) {
         criminalStatus = "Petty Criminal";
     } else if (totalLinesGlobal < 2000) {
